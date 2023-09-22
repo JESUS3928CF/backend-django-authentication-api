@@ -5,12 +5,13 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import NoteSerializer
 from base.models import Note
 
-# ! Lee
-# /- Esto es solo los usuarios autenticados tengan acceso a ciertas vistas o recursos.
 from rest_framework.permissions import IsAuthenticated
-# / Importando el decorador de permission_classes 
 from rest_framework.decorators import api_view, permission_classes
 
+#/ Importaciones necesarias
+from .serializers import UserRegistrationSerializer
+from rest_framework.generics import CreateAPIView
+from rest_framework import permissions
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -23,7 +24,17 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
- 
+
+
+
+#/ Endpoint para registrar un usuario
+class UserRegistrationView(CreateAPIView):
+    serializer_class = UserRegistrationSerializer
+    permission_classes = [permissions.AllowAny]  # Permite a cualquiera acceder a esta vista
+
+    def perform_create(self, serializer):
+        serializer.save()
+
 
 
 @api_view(['GET']) 
@@ -43,3 +54,4 @@ def getNotes(request):
     notes = user.note_set.all()
     serializer = NoteSerializer(notes, many=True)
     return Response(serializer.data)
+
