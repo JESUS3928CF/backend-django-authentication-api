@@ -1,3 +1,9 @@
 {
-    "cSpell.words": ["corsheaders", "serializador", "simplejwt"]
+    "cSpell.words": [
+        "corsheaders",
+        "serializador",
+        "simplejwt",
+        "sqlite",
+        "whitenoise"
+    ]
 }
